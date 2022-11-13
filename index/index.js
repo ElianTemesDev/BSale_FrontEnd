@@ -52,10 +52,10 @@ function searchHandler(){
 }
 
 async function getCategoriesForDropdown() {
+    let dropdownMenu = document.querySelector('#dropdown-menu');
     await fetch('http://www.localhost:8080/api/categories')
       .then((response) => response.json())
       .then((data) => {
-        let dropdownMenu = document.querySelector('#dropdown-menu');
         populateDropdown(dropdownMenu, data);
     }).catch(populateDropdown(dropdownMenu, hardcodedCategory))
 }
