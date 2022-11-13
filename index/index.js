@@ -1,8 +1,46 @@
 import {createProductCard} from "./productCard.js";
 
 let categoryId;
+let hardcodedCategory = [{   
+    "id": 1,
+    "name": "bebida energetica"
+}];
+let harcodedProducts = [{
+    "id": 5,
+    "name": "ENERGETICA MR BIG",
+    "urlImage": "https://dojiw2m9tvv09.cloudfront.net/11132/product/misterbig3308256.jpg",
+    "price": 1490.0,
+    "discount": 20,
+    "category": {
+        "id": 1,
+        "name": "bebida energetica"
+    }
+},
+{
+    "id": 6,
+    "name": "ENERGETICA RED BULL",
+    "urlImage": "https://dojiw2m9tvv09.cloudfront.net/11132/product/redbull8381.jpg",
+    "price": 1490.0,
+    "discount": 0,
+    "category": {
+        "id": 1,
+        "name": "bebida energetica"
+    }
+},
+{
+    "id": 7,
+    "name": "ENERGETICA SCORE",
+    "urlImage": "https://dojiw2m9tvv09.cloudfront.net/11132/product/logo7698.png",
+    "price": 1290.0,
+    "discount": 0,
+    "category": {
+        "id": 1,
+        "name": "bebida energetica"
+    }
+}];
+
 let searchInput = document.querySelector('#searchInput');
-let searchButton = document.querySelector('#searchBtn').addEventListener('click', searchHandler);
+document.querySelector('#searchBtn').addEventListener('click', searchHandler);
 
 function searchHandler(){
     if(categoryId){
@@ -13,15 +51,15 @@ function searchHandler(){
     }
 }
 
-async function asyncCall() {
+async function getCategoriesForDropdown() {
     await fetch('http://www.localhost:8080/api/categories')
       .then((response) => response.json())
       .then((data) => {
         let dropdownMenu = document.querySelector('#dropdown-menu');
         populateDropdown(dropdownMenu, data);
-    })
+    }).catch(populateDropdown(dropdownMenu, hardcodedCategory))
 }
-asyncCall();
+getCategoriesForDropdown();
 
 function populateDropdown(dropdown, categories){
     categories.forEach(category => {
@@ -67,7 +105,7 @@ async function loadProductsByCategory(category){
       div.innerHTML = "";
       data = sortNameAscending(data);
       data.forEach(product => div.appendChild(createProductCard(product)));
-  })
+  }).catch(harcodedProducts.forEach(product => div.appendChild(createProductCard(product))))
 };
 
 async function loadProductsBySearchAll(){
