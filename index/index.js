@@ -6,7 +6,7 @@ let searchButton = document.querySelector('#searchBtn').addEventListener('click'
 
 function searchHandler(){
     if(categoryId){
-        loadProductsBySearch();
+        loadProductsBySearchInCategory();
     }
     else{
         loadProductsBySearchAll();
@@ -53,6 +53,7 @@ async function loadAllProducts(){
     .then((data) => {
       let div = document.querySelector('#products');
       div.innerHTML = "";
+      data = sortNameAscending(data);
       data.forEach(product => div.appendChild(createProductCard(product)));
     })
 };
@@ -64,6 +65,7 @@ async function loadProductsByCategory(category){
     .then((data) => {
       let div = document.querySelector('#products');
       div.innerHTML = "";
+      data = sortNameAscending(data);
       data.forEach(product => div.appendChild(createProductCard(product)));
   })
 };
@@ -75,17 +77,31 @@ async function loadProductsBySearchAll(){
     .then((data) => {   
       let div = document.querySelector('#products');
       div.innerHTML = "";
+      data = sortNameAscending(data);
       data.forEach(product => div.appendChild(createProductCard(product)));
   }).catch( x => console.log("Not found"));
 }
 
-async function loadProductsBySearch(){
+async function loadProductsBySearchInCategory(){
     let searchString = searchInput.value;
     await fetch(`http://www.localhost:8080/api/product?name=${searchString}&category=${categoryId}`)
     .then((response) => response.json())
     .then((data) => {   
       let div = document.querySelector('#products');
       div.innerHTML = "";
+      data = sortNameAscending(data);
       data.forEach(product => div.appendChild(createProductCard(product)));
     }).catch( x => console.log("Not found"));
 };
+
+function sortNameAscending(data){
+    data.sort((a, b) => {
+        let nameA = a.name.toLowerCase(), nameB = b.name.toLowerCase();
+        if (nameA < nameB)
+            return -1;
+        if (nameA > nameB)
+            return 1;
+        return 0;
+      });
+    return data;
+}
