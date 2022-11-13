@@ -57,7 +57,7 @@ async function getCategoriesForDropdown() {
       .then((response) => response.json())
       .then((data) => {
         populateDropdown(dropdownMenu, data);
-    }).catch(populateDropdown(dropdownMenu, hardcodedCategory))
+    }).catch(x => populateDropdown(dropdownMenu, hardcodedCategory))
 }
 getCategoriesForDropdown();
 
@@ -86,26 +86,26 @@ function populateDropdown(dropdown, categories){
 
 async function loadAllProducts(){
     categoryId = null;
+    let div = document.querySelector('#products');
+    div.innerHTML = "";
     await fetch(`http://www.localhost:8080/api/products`)
     .then((response) => response.json())
     .then((data) => {
-      let div = document.querySelector('#products');
-      div.innerHTML = "";
       data = sortNameAscending(data);
       data.forEach(product => div.appendChild(createProductCard(product)));
-    })
+    }).catch(x => harcodedProducts.forEach(product => div.appendChild(createProductCard(product))))
 };
 
-async function loadProductsByCategory(category){
-    categoryId = category.target.id;
+async function loadProductsByCategory(event){
+    categoryId = event.target.id;
+    let div = document.querySelector('#products');
+    div.innerHTML = "";
     await fetch(`http://www.localhost:8080/api/product?category=${categoryId}`)
     .then((response) => response.json())
     .then((data) => {
-      let div = document.querySelector('#products');
-      div.innerHTML = "";
       data = sortNameAscending(data);
       data.forEach(product => div.appendChild(createProductCard(product)));
-  }).catch(harcodedProducts.forEach(product => div.appendChild(createProductCard(product))))
+  }).catch(x => harcodedProducts.forEach(product => div.appendChild(createProductCard(product))))
 };
 
 async function loadProductsBySearchAll(){
