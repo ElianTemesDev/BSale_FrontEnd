@@ -1,0 +1,21 @@
+.product-card{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    font-size: 1em;
+    width: 9em;
+    border: 1px solid black;
+    border-radius: 1em;
+    padding: .4em;
+    margin: 1em;
+}
+.product-img{
+    height: auto;
+    max-width: 100%;
+}
+#products{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: start;
+}
